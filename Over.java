@@ -1,6 +1,15 @@
 package exercise05;
 
 public class Over {
+
+    private boolean invariant(){
+        return false; //TO DO
+    }
+
+    public Over(){
+
+    }
+
     //if a sufficient number of players have won, interrupts the game and prints out the ranking list
     public boolean isOver(){
         //either one player is a winner

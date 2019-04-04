@@ -21,10 +21,12 @@ public class InputAnalyzer {
     public boolean lengthValid(String fromFile){
         //get length
         //not " "
+        return false;
     }
 
     public char saveAsChar(String fromFile){
         //convert to char and return as player symbol
+        return '0';
     }
 
     //methods for saving goal side and symbol
