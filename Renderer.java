@@ -1,5 +1,13 @@
 package exercise05;
 
+// TO DO: Think about changing the constructor:
+// He could accept a game instead of a Tile[][], which would
+// make it easier to test the Renderer.
+// The game's game board should then be made accessible however.
+
+// Also, the Game#toString() method works nice the way it is implemented now.
+// On the other hand, each time it is called, a new Renderer is created...
+
 /**
  * Renders a {@link Game} object.
  * Is used to visualize the game's current state.

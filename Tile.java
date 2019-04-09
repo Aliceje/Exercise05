@@ -8,7 +8,7 @@ package exercise05;
 public class Tile {
 
     private int[] position;
-    private State state;
+    private State state; // TO DO: Think about use, remove if not needed in implementation.
     private Game game;
     private TileOccupier occupier;
 
@@ -22,13 +22,14 @@ public class Tile {
      */
     private boolean invariant(){
         return state != null
-                && position != null; //TO DO: position must be on the game board
+                && position != null;
     }
 
     /**
      * Creates a new Tile Object for a specific
-     * game at a specific place on the game's game board.
-     * Used inside the (@link Game) and inside the (@link Player) class.
+     * game at a specific place on the game board.
+     *
+     * Used inside the {@link Game} and inside the {@link Player} class.
      *
      * @param game Game the Game the Tile belongs to
      * @param x int the x-value on the game board Array
@@ -42,6 +43,12 @@ public class Tile {
         assert invariant();
     }
 
+    /**
+     * Getter method for the Tile's position
+     * on the game board.
+     *
+     * @return int[] the Tile's position
+     */
     public int[] position() {
         return this.position;
     }
@@ -104,29 +111,25 @@ public class Tile {
     }
 
     /**
-     * Let's a new player enter this tile.
+     * Let's a new player enter this Tile.
      * Must be empty before the player enters.
      *
-     * @param newOccupier
-     * @return boolean true for testing
+     * @param newOccupier TileOccupier wanting to enter
      */
-    public boolean enter(TileOccupier newOccupier){
+    public void enter(TileOccupier newOccupier){
         assert occupier == null;
         occupier = newOccupier;
-        return true; //for testing purposes
     }
 
     /**
      * Let's a player leave this tile.
      * The player must occupy this tile in order to leave it.
      *
-     * @param currentOccupier
-     * @return true for testing
+     * @param currentOccupier TileOccupier currently on this tile
      */
-    public boolean leave(TileOccupier currentOccupier){
+    public void leave(TileOccupier currentOccupier){
         assert occupier == currentOccupier;
         occupier = null;
-        return true; //for testing purposes
     }
 
     /**

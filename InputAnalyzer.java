@@ -21,12 +21,19 @@ public class InputAnalyzer {
     public boolean lengthValid(String fromFile){
         //get length
         //not " "
+        if(fromFile.length() == 1){
+			return true;
+		}
+		else{
         return false;
+        }
     }
 
     public char saveAsChar(String fromFile){
         //convert to char and return as player symbol
-        return '0';
+        char c = fromFile.charAt(0);
+        
+        return c;
     }
 
     //methods for saving goal side and symbol

@@ -1,4 +1,4 @@
-package quoridor;
+package exercise05;
 
 public class WallTest {
 }

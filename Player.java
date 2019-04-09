@@ -9,36 +9,31 @@ package exercise05;
  * He knows which tile he is currently on
  * and on which tile he started.
  *
- * He has a certain amount of Walls {@link Wall} that he can put up
+ * He has a certain amount of {@link Wall} instances that he can put up
  * during the game.
  *
  * Implements the {@link TileOccupier} Interface.
  */
 public class Player implements TileOccupier{
 
-    public static final int NUM_OF_WALLS = 5;
-
-    private String name;
-    private String symbol;
+    private String name, symbol, targetSide;
     private Tile tile;
     private int[] initialPosition;
-    private boolean winner;
+    private boolean winner; // needed, or only Game responsibility?
     private int wallsSet;
-    private boolean wallsLimitReached;
+    private boolean wallsLimitReached; // needed, or only Game responsibility?
 
     /**
-     * Class invariant: Conditions that must always hold.
-     *
-     * wallsSet not higher than NUM_OF_WALLS
-     * If wallsSet == NUM_OF_WALLS, limitReached should be true
-     * name and symbol not empty
+     * Class invariant: Conditions that must always hold
+     * after the Player has joined the game.
      *
      * @return true if invariant states have not been modified
      */
     private boolean invariant(){
        return name != null
                 && symbol != null
-                && !(wallsSet > NUM_OF_WALLS);
+                && tile != null
+                && targetSide != null;
     }
 
     /**
@@ -48,14 +43,20 @@ public class Player implements TileOccupier{
      * @param name String the players name
      * @param symbol String the players symbol on the game board
      */
-    public Player(String name, String symbol, int x, int y){
+    public Player(String name, String symbol, int x, int y, String target){
         this.name = name;
         this.symbol = symbol;
+        targetSide = target;
         initialPosition = new int[]{(x-1), (y-1)};
         winner = false;
         wallsSet = 0;
         wallsLimitReached = false;
     }
+
+    /**
+     * A 'nobody' Player with no properties.
+     */
+    public Player(){}
 
     /**
      * Lets the player join a game.
@@ -69,20 +70,7 @@ public class Player implements TileOccupier{
         int y = initialPosition[1];
         tile = game.findTile(x, y);
         tile.enter(this);
-    }
-
-    /**
-     * Checks if the player can still put up walls.
-     *
-     * @param walls_set int the walls set so far.
-     * @return true if the limit has not been reached yet.
-     */
-    public boolean wallsLeft(int walls_set){
-        if(walls_set == NUM_OF_WALLS){
-            return false;
-        } else {
-            return true;
-        }
+        assert invariant();
     }
 
     public boolean reachedTargetSide(){ return false; } //TO DO
@@ -94,7 +82,7 @@ public class Player implements TileOccupier{
 
     /**
      * Boolean flag for use in other classes.
-     * For example inside the (@link Tile#toString) method.
+     * For example inside the {@link Tile#toString} method.
      * Always returns true.
      *
      * @return true
@@ -103,7 +91,7 @@ public class Player implements TileOccupier{
 
     /**
      * Boolean flag for use in other classes.
-     * Returns always false.
+     * Always returns false.
      *
      * @return false
      */
@@ -118,29 +106,38 @@ public class Player implements TileOccupier{
      * Asks the current tile which tile the player has to go to
      * according to the direction.
      *
+     * Enters the player into that tile if it's not occupied.
+     *
      * @param direction String the direction the player takes
      */
     public void move(String direction) {
         Tile currentTile = tile;
         tile.leave(this);
-        switch (direction){
+        switch (direction){ // assigns new Tile to Player.tile
             case "U":
-                currentTile.tileAbove().enter(this);
+                tile = currentTile.tileAbove();
                 break;
             case "D":
-                currentTile.tileBelow().enter(this);
+                tile = currentTile.tileBelow();
                 break;
             case "L":
-                currentTile.tileToLeft().enter(this);
+                tile = currentTile.tileToLeft();
                 break;
             case "R":
-                currentTile.tileToRight().enter(this);
+                tile = currentTile.tileToRight();
                 break;
         }
+        tile.enter(this); // assigns new Player to Tile.TileOccupier
     }
 
     public void placeWall(){
+        wallsSet++;
+        //TO DO
+        //Ask Game if walls Left
+    }
 
+    public int getWallsSet(){
+        return wallsSet;
     }
 
     /**

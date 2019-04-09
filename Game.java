@@ -8,14 +8,15 @@ import java.util.*;
  * Quoridor is a strategy game where each player must reach
  * the opposite side of the playing field from where he starts.
  *
- * Sets up a game with (@link Player) players and a game board
- * of a specific width and height made up of (@link Tile) tiles.
+ * Sets up a game with {@link Player} players and a game board
+ * of a specific width and height made up of {@link Tile} tiles.
  *
  * Moves the players on the game board and keeps track
  * of the game's changes.
  */
 public class Game {
 
+    public int numberOfWalls;
     private Tile[][] gameboard;
     private Deque<Player> players;
     private ArrayList<Player> winners;
@@ -23,11 +24,13 @@ public class Game {
     private boolean invariant(){
         return players.size() > 1
                 && gameboard != null
-                && winners != null;
+                && winners != null
+                && numberOfWalls > 0;
          //TO UPDATE: What conditions does the game have? No more than 4 players?
     }
 
-    public Game(int width, int height, Queue<Player> players){
+    public Game(int width, int height, Queue<Player> players, int walls){
+        numberOfWalls = walls;
         this.initGameBoard(width, height);
         this.addPlayers(players);
         winners = new ArrayList<Player>();
@@ -36,32 +39,25 @@ public class Game {
         assert invariant();
     }
 
-    public static void main(String args[]){
-        Player otis = new Player("Otis Redding", "O", 1,1);
-        Player solomon = new Player("Solomon Burke", "S",7,12);
-        Queue<Player> participants = new LinkedList<Player>();
-        participants.add(otis);
-        participants.add(solomon);
-        Game game = new Game(7,12, participants);
-        System.out.println(game);
-        game.move(game.currentPlayer(), "R");
-        System.out.print("\n");
-        System.out.print(game);
-    }
-
-    //createGame()
-    //doublecheck after every move
-    //update
-    //print out
-    //makeMove() per player
-    //loop while game is not over
-
     public void createGame(){
         //TO DO?
     }
 
     public void play(){
         //TO DO
+    }
+
+    /**
+     * Simple method to get human player input.
+     * At this stage mainly for testing purposes.
+     * Might be changed in course of game development!
+     *
+     * @return String the direction the player wants to take
+     */
+    public String askPlayerNextMove(){
+        System.out.println("Please enter next move: ");
+        Scanner scan = new Scanner(System.in);
+        return scan.nextLine();
     }
 
     /**
@@ -75,7 +71,7 @@ public class Game {
         gameboard = new Tile[(height)][(width)];
         for(int i = 0; i <= (height-1); i++){
             for(int j = 0; j <= (width-1); j++){
-                gameboard[i][j] = new Tile (this, i, j);
+                gameboard[i][j] = new Tile (this, j, i);
             }
         }
     }
@@ -149,18 +145,19 @@ public class Game {
      */
     public Player currentPlayer(){ return players.peek(); }
 
-    /*
-     * Updates the game board after a player has moved.
-     * Not sure about use yet.
+    /**
+     * Returns the maximum number of walls a Player can build.
+     *
+     * @return int the number of walls per Player
      */
-    private void updateGameBoard(){
-
+    public int getNumberOfWalls(){
+        return numberOfWalls;
     }
 
     /**
      * Returns a String that represents the current
      * state of the game.
-     * Uses a (@link Renderer) Object which actually
+     * Uses a {@link Renderer} Object which actually
      * creates the String.
      *
      * @return String representing the game state

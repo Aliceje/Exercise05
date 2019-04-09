@@ -1,5 +1,4 @@
 package exercise05;
-
 /**
  * Represents a move made by a player in the game.
  *
